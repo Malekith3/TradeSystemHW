@@ -6,16 +6,19 @@
 class ShoppingCart
 {
 	int sizeOfCartArray;
-	int numberOfProduct;
+	int numberOfProducts;
 	Product** products;
 public:
 	//***************************Constructors*************************************
 	ShoppingCart() :
 	sizeOfCartArray(0),
-	numberOfProduct(0) {}
+	numberOfProducts(0) {}
 	ShoppingCart(const Product& product);
 	//***************************Destructor***************************************
 	~ShoppingCart() { ReleaseProductArray(); }
+	//***************************Destructor***************************************
+
+	ShoppingCart(const ShoppingCart& other);
 	//***************************Methods******************************************
 	void AddProductToShopingCart(const Product& product);
 	void PrintShopingCart() const;
