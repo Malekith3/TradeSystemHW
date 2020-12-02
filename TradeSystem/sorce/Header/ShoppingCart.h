@@ -19,9 +19,11 @@ public:
 	//***************************Methods******************************************
 	void AddProductToShopingCart(const Product& product);
 	void PrintShopingCart() const;
+	void EmptyTheShoppingCart();
 private :
 	Product** RealocateProductArray();
 	void ReleaseProductArray();
 	//****************************************************************************
 };
+
 #endif
