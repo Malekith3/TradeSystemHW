@@ -1,7 +1,8 @@
 *.sln
+.vs
 /TradeSystem/*.vcxproj
 /TradeSystem/*.filters
 /TradeSystem/*.user
-/bin
+/TradeSystem/Test.cpp
 /TradeSystem/obj
-.vs
+/bin
