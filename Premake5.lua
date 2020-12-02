@@ -16,7 +16,7 @@ project "TradeSystem"
 
 	 files 
 	 { 
-	 	"%{prj.name}/sorce/Headers/**.h",
+	 	"%{prj.name}/sorce/Header/**.h",
 	 	"%{prj.name}/sorce/CPP/**.cpp"
 	 }
 
