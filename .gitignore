@@ -1,0 +1,7 @@
+*.sln
+/TradeSystem/*.vcxproj
+/TradeSystem/*.filters
+/TradeSystem/*.user
+/bin
+/TradeSystem/obj
+.vs
