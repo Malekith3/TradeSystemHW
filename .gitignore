@@ -4,6 +4,6 @@
 /TradeSystem/*.vcxproj
 /TradeSystem/*.filters
 /TradeSystem/*.user
-/TradeSystem/sorce/Test.cpp
+/TradeSystem/source/Test.cpp
 /TradeSystem/obj
 /bin

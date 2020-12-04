@@ -1,5 +1,4 @@
-﻿#include "Header/ShoppingCart.h"
-
+﻿#include "../Header/ShoppingCart.h"
 #include <iostream>
 
 ShoppingCart::ShoppingCart(const Product& product)
