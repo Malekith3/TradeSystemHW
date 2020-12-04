@@ -16,8 +16,8 @@ project "TradeSystem"
 
 	 files 
 	 { 
-	 	"%{prj.name}/sorce/Header/**.h",
-	 	"%{prj.name}/sorce/CPP/**.cpp"
+	 	"%{prj.name}/source/Header/**.h",
+	 	"%{prj.name}/source/CPP/**.cpp"
 	 }
 
 	 includedirs
