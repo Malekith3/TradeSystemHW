@@ -1,4 +1,4 @@
-#include "Address.h"
+#include "Header/Address.h"
 #include <iostream>
 using namespace std;
 Address::Address(const char* streetName, int buildingNumber, const char* city, const char* country)
@@ -37,28 +37,37 @@ Address::~Address()
 	delete[] this->streetName;
 }
 
-void Address::PrintAddress()
+void Address::PrintAddress() const
 {
 	cout << "Country: " << this->country << endl << "City: " << this->city << endl << "Street name: " << this->streetName << endl << "Building number: " << this->buildingNumber << endl;
 }
 
-void Address::SetStreetName(const char* streetName)
+Address& Address::SetStreetName(const char* streetName)
 {
 	delete[] this->streetName;
 	this->streetName = new char[strlen(streetName) + 1];
 	strcpy(this->streetName, streetName);
+	return *this;
 }
 
-void Address::SetCity(const char* city)
+Address& Address::SetBuildingNumber(const int& buiildingNumber)
+{
+	this->buildingNumber = buiildingNumber;
+	return *this;
+}
+
+Address& Address::SetCity(const char* city)
 {
 	delete[] this->city;
 	this->city = new char[strlen(city) + 1];
 	strcpy(this->city, city);
+	return *this;
 }
 
-void Address::SetCountry(const char* country)
+Address& Address::SetCountry(const char* country)
 {
 	delete[] this->country;
 	this->country = new char[strlen(country) + 1];
 	strcpy(this->country, country);
+	return *this;
 }

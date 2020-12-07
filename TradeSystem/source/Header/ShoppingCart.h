@@ -16,13 +16,16 @@ public:
 	ShoppingCart(const Product& product);
 	//***************************Destructor***************************************
 	~ShoppingCart() { ReleaseProductArray(); }
-	//***************************Destructor***************************************
-
+	//***************************Copy C'tor***************************************
 	ShoppingCart(const ShoppingCart& other);
+	//***************************Getters & Setters********************************
+	int GetNumberOfProducts() const{return numberOfProducts;}
+	Product** GetProducts() const{return products;}
 	//***************************Methods******************************************
 	void AddProductToShopingCart(const Product& product);
 	void PrintShopingCart() const;
 	void EmptyTheShoppingCart();
+	const int CalculateCartSum()const;
 private :
 	Product** RealocateProductArray();
 	void ReleaseProductArray();

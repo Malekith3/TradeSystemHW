@@ -1,7 +1,5 @@
 #ifndef __ADDRESS_H__
 #define __ADDRESS_H__
-#include <cstring>
-
 class Address
 {
 	char* streetName;
@@ -20,18 +18,18 @@ public:
 	~Address();
 
 	//***************************Methods******************************************
-	void PrintAddress();
+	void PrintAddress() const;
 
 	//***************************Getters & Setters********************************
-	void SetStreetName(const char* streetName);
-	void SetBuildingNumber(const int& buiildingNumber) { this->buildingNumber = buiildingNumber; }
-	void SetCity(const char* city);
-	void SetCountry(const char* country);
+	Address& SetStreetName(const char* streetName);
+	Address& SetBuildingNumber(const int& buiildingNumber);
+	Address& SetCity(const char* city);
+	Address& SetCountry(const char* country);
 
-	const char* GetStreetName() { return this->streetName; }
-	const int& GetBuildingNumber() { return this->buildingNumber; }
-	const char* GetCity() { return this->city; }
-	const char* GetCountry() { return this->country; }
+	const char* GetStreetName() const { return this->streetName; }
+	const int& GetBuildingNumber() const { return this->buildingNumber; }
+	const char* GetCity() const { return this->city; }
+	const char* GetCountry() const { return this->country; }
 
 	//****************************************************************************
 };

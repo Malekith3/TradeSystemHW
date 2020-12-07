@@ -16,13 +16,15 @@ project "TradeSystem"
 
 	 files 
 	 { 
-	 	"%{prj.name}/source/Header/**.h",
-	 	"%{prj.name}/source/CPP/**.cpp"
+	 	"%{prj.name}/source/Header/*.h",
+	 	"%{prj.name}/source/CPP/*.cpp",
+	 	"%{prj.name}/source/*.cpp",
+	 	"%{prj.name}/source/*.h"
 	 }
 
 	 includedirs
 	 {
-		"TradeSystem/sorce"
+		"TradeSystem/source"
 	 }
 
 	filter "system:windows"
