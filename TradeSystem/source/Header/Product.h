@@ -9,25 +9,25 @@ public:
 	//***************************Declarations*************************************
 	enum ProductType {Kids,Electronics,Office,Clothes};
 	//***************************Constructors*************************************
-	Product(const char* name_of_poduct, const int& price_of_product, ProductType product_type);
+	Product(const char* nameOfProduct, const int& priceOfProduct, ProductType productType);
 	//***************************Copy Ctor****************************************
 	Product(const Product& other);
 	//***************************Destructor***************************************
-	~Product(){std::cout << "Product D'tor called \n";delete[] this->nameOfPoduct;}
+	~Product(){delete[] this->nameOfProduct;}
 	//***************************Getters & Setters********************************
-	char* GetNameOfProduct() const {return this->nameOfPoduct;}
+	char* GetNameOfProduct() const {return this->nameOfProduct;}
 	const int& GetPriceOfProduct() const {return this->priceOfProduct;}
 	const char* GetProductType() const { return productTypeStr[productType]; }
-	void SetPriceOfProduct(int price_of_product) { this->priceOfProduct = price_of_product; }
-	void SetProductType(ProductType product_type) {this->productType = product_type;}
-	void SetNameOfProduct(char* name_of_poduct);
+	bool SetPriceOfProduct(int priceOfProduct);
+	bool SetProductType(ProductType productType);
+	bool SetNameOfProduct(char* nameOfProduct);
 	//***************************Methods******************************************
 	void PrintProduct() const;
 	//****************************************************************************
 	
 private:
 	static const char* productTypeStr[4];
-	char* nameOfPoduct{};
+	char* nameOfProduct;
 	int priceOfProduct;
 	ProductType productType;
 };

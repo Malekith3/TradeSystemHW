@@ -1,25 +1,39 @@
 #include "Header/Product.h"
 const char* Product::productTypeStr[4] = {"Kids","Electronics","Office","Clothes"};
 
-Product::Product(const char* name_of_poduct, const int& price_of_product, ProductType product_type)
-	: priceOfProduct(price_of_product),
-	productType(product_type)
+Product::Product(const char* nameOfProduct, const int& priceOfProduct, ProductType productType)
+	: priceOfProduct(priceOfProduct),
+	productType(productType)
 {
-	std::cout << "Product C'tor called \n";
-	this->nameOfPoduct = new char[strlen(name_of_poduct) + 1];
-	strcpy(this->nameOfPoduct, name_of_poduct);
+	//std::cout << "Product C'tor called \n";
+	this->nameOfProduct = new char[strlen(nameOfProduct) + 1];
+	strcpy(this->nameOfProduct, nameOfProduct);
 }
 
-void Product::SetNameOfProduct(char* name_of_poduct)
+bool Product::SetPriceOfProduct(int priceOfProduct)
 {
-	delete[] this->nameOfPoduct;
-	this->nameOfPoduct = new char[strlen(name_of_poduct) + 1];
-	strcpy(this->nameOfPoduct, name_of_poduct);
+	this->priceOfProduct = priceOfProduct;
+	return true;
+}
+
+bool Product::SetProductType(ProductType productType)
+{
+	this->productType = productType;
+	return true;
+}
+
+bool Product::SetNameOfProduct(char* nameOfProduct)
+{
+
+	delete[] this->nameOfProduct;
+	this->nameOfProduct = new char[strlen(nameOfProduct) + 1];
+	strcpy(this->nameOfProduct, nameOfProduct);
+	return true;
 }
 
 void Product::PrintProduct() const
 {
-	std::cout << "Name of the product : " << this->nameOfPoduct			<< std::endl
+	std::cout << "Name of the product : " << this->nameOfProduct			<< std::endl
 			  << "Type of the product :"  << this->GetProductType()		<< std::endl
 			  << "Price of the product :" << this->priceOfProduct  <<"$"<<std::endl;
 }
@@ -27,8 +41,9 @@ void Product::PrintProduct() const
 Product::Product(const Product& other):
 priceOfProduct(other.priceOfProduct),productType(other.productType)
 {
-	std::cout << "Product copy C'tor called \n";
-	SetNameOfProduct(other.GetNameOfProduct());
+	//std::cout << "Product copy C'tor called \n";
+	this->nameOfProduct = new char[strlen(other.nameOfProduct) + 1];
+	strcpy(this->nameOfProduct, other.nameOfProduct);
 }
 
 

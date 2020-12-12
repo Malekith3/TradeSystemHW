@@ -24,8 +24,8 @@ public:
 	//***************************Getters & Setters********************************
 	char* GetUserName() const {return userName;}
 
-	void SetUserPassword(const char* userPassword, const char* key);
-	void SetUserName(char* const userName);
+	bool SetUserPassword(const char* userPassword, const char* key);
+	bool SetUserName(char* const userName);
 	Address& ChangeAddress() { return *this->address;}
 	//***************************Methods******************************************
 	void AddToShoppingCart(const Product& product) { this->shopingCart->AddProductToShopingCart(product); }

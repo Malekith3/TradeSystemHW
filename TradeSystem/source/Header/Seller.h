@@ -23,8 +23,8 @@ public:
 	char* GetUserName() const { return userName; }
 	const int& GetNumberOfProducts() const {return numberOfProducts;}
 
-	void SetUserName(char* const userName);
-	void SetUserPassword(const char* userPassword ,const char* key);
+	bool SetUserName(char* const userName);
+	bool SetUserPassword(const char* userPassword, const char* key);
 	Address& ChangeAddress() { return *this->address; }
 	//***************************Copy Ctor****************************************
 	Seller(const Seller& other);

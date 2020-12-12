@@ -2,7 +2,7 @@
 
 Seller::Seller(const char* userName, const char* userPassword , const Address& address):sizeOfProductArray(0),numberOfProducts(0)
 {
-	std::cout << "Seller C'tor called \n";
+	//std::cout << "Seller C'tor called \n";
 	if (strlen(this->userPassword) >= strlen(userName))
 	{
 		strcpy(this->userPassword, userPassword);
@@ -16,7 +16,7 @@ Seller::Seller(const char* userName, const char* userPassword , const Address& a
 
 Seller::~Seller()
 {
-	std::cout << "Seller D'tor called \n";
+	//std::cout << "Seller D'tor called \n";
 	delete[] userName;
 	delete address;
 	if (this->sizeOfProductArray !=0)
@@ -29,27 +29,32 @@ Seller::~Seller()
 	}
 }
 
-void Seller::SetUserName(char* const userName)
+bool Seller::SetUserName(char* const userName)
 {
 	delete[] this->userName;
 	this->userName = new char[strlen(userName) + 1];
 	strcpy(this->userName, userName);
+	return true;
 }
 
-void Seller::SetUserPassword(const char* userPassword , const char* key)
+bool Seller::SetUserPassword(const char* userPassword, const char* key)
 {
 	if (!strcmp(this->userPassword,key) && strlen(this->userPassword) >= strlen(userName))
 	{
 		strcpy(this->userPassword, userPassword);
 		std::cout << "Password is changed \n";
+		return true;
 	}
-	else
+	else 
+	{
 		std::cout << "key need to be previous password ! please enter the right one \n ";
+		return  false;
+	}
 }
 
 Seller::Seller(const Seller& other) : numberOfProducts(other.numberOfProducts) , sizeOfProductArray(other.sizeOfProductArray)
 {
-	std::cout << "Seller copy C'tor called \n";
+	//std::cout << "Seller copy C'tor called \n";
 	if (strlen(this->userPassword) >= strlen(other.userName))
 	{
 		strcpy(this->userPassword, other.userPassword);
@@ -96,8 +101,10 @@ void Seller::PrintSeller(bool printAddress , bool printProducts )
 
 Product** Seller::RealocateProductArray()
 {
-	Product** buffer = new Product * [this->sizeOfProductArray + 2];
-	this->sizeOfProductArray += 2;
+	if (this->sizeOfProductArray == 0)
+		++this->sizeOfProductArray;
+	this->sizeOfProductArray *= 2;
+	Product** buffer = new Product * [this->sizeOfProductArray];
 	if (this->numberOfProducts == 0)
 	{
 		return buffer;
@@ -108,7 +115,7 @@ Product** Seller::RealocateProductArray()
 		{
 			buffer[i] = this->products[i];
 		}
-		delete[] products;
+		delete products;
 		return buffer;
 	}
 }

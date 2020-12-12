@@ -8,11 +8,11 @@ class Order
 	int orderInvoiceSum;
 public:
 	//***************************Constructors*************************************
-	Order::Order(const Buyer& buyer ,int orderInvoiceSum) : buyer(buyer) ,orderInvoiceSum(orderInvoiceSum){ std::cout << "Order Ctor called \n"; }
+	Order::Order(const Buyer& buyer ,int orderInvoiceSum) : buyer(buyer) ,orderInvoiceSum(orderInvoiceSum){}
 	//***************************Copy Ctor****************************************
 	Order(const Order& other) = default;
 	//***************************Destructor***************************************
-	~Order() { std::cout << "Order Dtor called \n"; }
+	~Order() {  }
 	//***************************Getters & Setters********************************
 	const Buyer& GetOrder()const { return  this->buyer; };
 	//***************************Methods******************************************

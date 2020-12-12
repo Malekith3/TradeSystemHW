@@ -1,19 +1,18 @@
 ﻿#include "Header/ShoppingCart.h"
 
-ShoppingCart::ShoppingCart(const Product& product)
+ShoppingCart::ShoppingCart(const Product& product):numberOfProducts(0),sizeOfCartArray(1)
 {
-	std::cout << "ShopingCart Ctor called \n";
-	++this->numberOfProducts;
-	this->sizeOfCartArray += 2;
+	//std::cout << "ShopingCart Ctor called \n";
 	this->products = new Product*[sizeOfCartArray];
 	this->products[numberOfProducts] = new Product(product);
+	++this->numberOfProducts;
 }
 
 //mby need to be reimplemented for now its very costly
 
 ShoppingCart::ShoppingCart(const ShoppingCart& other):sizeOfCartArray(other.sizeOfCartArray),numberOfProducts(other.numberOfProducts)
 {
-	std::cout << "ShopingCart copy Ctor called \n";
+	//std::cout << "ShopingCart copy Ctor called \n";
 	this->products = new Product * [other.numberOfProducts];
 	for (int i = 0; i < other.numberOfProducts; ++i)
 	{
@@ -76,9 +75,10 @@ const int ShoppingCart::CalculateCartSum() const
 
 Product** ShoppingCart::RealocateProductArray()
 {
-	
-	Product** buffer = new Product*[this->sizeOfCartArray+2];
-	this->sizeOfCartArray += 2;
+	if (this->sizeOfCartArray==0)
+		++this->sizeOfCartArray;
+	this->sizeOfCartArray *= 2;
+	Product** buffer = new Product*[this->sizeOfCartArray];
 	if (this->numberOfProducts == 0)
 	{
 		return buffer;
@@ -96,14 +96,14 @@ Product** ShoppingCart::RealocateProductArray()
 
 void ShoppingCart::ReleaseProductArray()
 {
-	std::cout << "ShoppingCart D'tor called\n";
+	//std::cout << "ShoppingCart D'tor called\n";
 	if (this->numberOfProducts !=0)
 	{
 		for (int i = 0; i < this->numberOfProducts; ++i)
 		{
 			delete this->products[i];
 		}
-		delete[] this->products;
+		delete this->products;
 	}
 	
 }

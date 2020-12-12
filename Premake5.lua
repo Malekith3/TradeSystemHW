@@ -37,9 +37,4 @@ project "TradeSystem"
    filter "configurations:Debug"
       defines { "DEBUG" }
       symbols  "On"
- 
-    filter "configurations:Release"
-      defines { "NDEBUG" }
-      symbols  "On"
-      optimize "On"
-
+	  optimize "Off"

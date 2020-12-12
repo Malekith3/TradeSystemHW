@@ -4,14 +4,14 @@ TradeSystem::TradeSystem(char* systemName)
 	: numberOfBuyers(0),numberOfSellers(0),numberOfOrders(0),
 	  sizeOfBuyersArray(0),sizeOfSellersArray(0),sizeOfOrdersArray(0)
 {
-	std::cout << "TradeSystem Ctor called \n";
+	//std::cout << "TradeSystem Ctor called \n";
 	this->systemName = new char[strlen(systemName) + 1];
 	strcpy(this->systemName, systemName);
 }
 
 TradeSystem::~TradeSystem()
 {
-	std::cout << "TradeSystem Dtor called \n";
+	//std::cout << "TradeSystem Dtor called \n";
 	if (this->numberOfBuyers)
 	{
 		for (int i = 0; i < this->numberOfBuyers; ++i)
@@ -157,8 +157,11 @@ void TradeSystem::PrintOrders(bool printAddress) const
 
 Seller** TradeSystem::RealocateSellersArray()
 {
-	Seller** buffer = new Seller* [this->sizeOfSellersArray + 2];
-	this->sizeOfSellersArray += 2;
+	if (this->sizeOfSellersArray == 0)
+		++this->sizeOfSellersArray;
+	this->sizeOfSellersArray *= 2;
+	Seller** buffer = new Seller* [this->sizeOfSellersArray ];
+	
 	if (this->numberOfSellers == 0)
 	{
 		return buffer;
@@ -169,7 +172,7 @@ Seller** TradeSystem::RealocateSellersArray()
 		{
 			buffer[i] = this->sellers[i];
 		}
-		delete[] sellers;
+		delete sellers;
 		return buffer;
 	}
 	
@@ -177,8 +180,11 @@ Seller** TradeSystem::RealocateSellersArray()
 
 Buyer** TradeSystem::RealocateBuyersArray()
 {
-	Buyer** buffer = new Buyer * [this->sizeOfBuyersArray + 2];
-	this->sizeOfBuyersArray += 2;
+	if (this->sizeOfBuyersArray == 0)
+		++this->sizeOfBuyersArray;
+	this->sizeOfBuyersArray *= 2;
+	Buyer** buffer = new Buyer * [this->sizeOfBuyersArray];
+	
 	if (this->numberOfBuyers == 0)
 	{
 		return buffer;
@@ -189,15 +195,18 @@ Buyer** TradeSystem::RealocateBuyersArray()
 		{
 			buffer[i] = this->buyers[i];
 		}
-		delete[] buyers;
+		delete buyers;
 		return buffer;
 	}
 }
 
 const Order** TradeSystem::RealocateOrdersArray()
 {
-	const Order** buffer = new const Order * [this->sizeOfOrdersArray + 2];
-	this->sizeOfOrdersArray += 2;
+	if (this->sizeOfOrdersArray == 0)
+		++this->sizeOfOrdersArray;
+	this->sizeOfOrdersArray *= 2;
+	const Order** buffer = new const Order * [this->sizeOfOrdersArray];
+	
 	if (this->numberOfOrders == 0)
 	{
 		return buffer;
@@ -208,7 +217,7 @@ const Order** TradeSystem::RealocateOrdersArray()
 		{
 			buffer[i] = this->orders[i];
 		}
-		delete[] orders;
+		delete orders;
 		return buffer;
 	}
 }
