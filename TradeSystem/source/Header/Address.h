@@ -10,6 +10,7 @@ class Address
 public:
 	//***************************Constructors*************************************
 	Address(const char* streetName, int buildingNumber, const char* city, const char* country);
+	Address() = default;
 	
 	//***************************Copy Ctor****************************************
 	Address(const Address& other);

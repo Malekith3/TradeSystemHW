@@ -24,7 +24,7 @@ public:
 	//***************************Methods******************************************
 	void AddProductToShopingCart(const Product& product);
 	void PrintShopingCart() const;
-	void EmptyTheShoppingCart();
+	bool EmptyTheShoppingCart();
 	const int CalculateCartSum()const;
 private :
 	Product** RealocateProductArray();

@@ -3,7 +3,7 @@
 using namespace std;
 Address::Address(const char* streetName, int buildingNumber, const char* city, const char* country)
 {
-	//cout << "c'tor of Address" << endl;		for debugging only
+	//cout << "c'tor of Address" << endl;		//for debugging only
 	
 	this->streetName = new char[strlen(streetName) + 1];
 	this->city = new char[strlen(city) + 1];
@@ -17,7 +17,7 @@ Address::Address(const char* streetName, int buildingNumber, const char* city, c
 
 Address::Address(const Address& other)
 {
-	//cout << "copy c'tor of Address" << endl;		for debugging only
+	//cout << "copy c'tor of Address" << endl;		//for debugging only
 	this->streetName = new char[strlen(other.streetName) + 1];
 	this->city = new char[strlen(other.city) + 1];
 	this->country = new char[strlen(other.country) + 1];
@@ -31,7 +31,7 @@ Address::Address(const Address& other)
 
 Address::~Address()
 {
-	//cout << "d'tor of Address" << endl;		for debugging only
+	//cout << "d'tor of Address" << endl;		//for debugging only
 	delete[] this->country;
 	delete[] this->city;
 	delete[] this->streetName;

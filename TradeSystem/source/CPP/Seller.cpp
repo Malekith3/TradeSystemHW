@@ -90,6 +90,11 @@ void Seller::PrintSeller(bool printAddress , bool printProducts )
 		this->address->PrintAddress();
 	if (printProducts)
 	{
+		if (this->numberOfProducts==0)
+		{
+			std::cout << "This seller has no products to sell" << std::endl;
+			return;
+		}
 		std::cout <<  "Seller products : " << std::endl;
 		for (int i = 0; i < this->numberOfProducts; ++i)
 		{

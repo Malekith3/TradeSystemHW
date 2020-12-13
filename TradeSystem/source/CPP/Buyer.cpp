@@ -39,9 +39,13 @@ Buyer::~Buyer()
 
 const Order& Buyer::OrderAndCheckout() 
 {
-	Order* order =  new Order(*this , shopingCart->CalculateCartSum());
-	this->shopingCart->EmptyTheShoppingCart();
-	return *order;
+	if (this->shopingCart->GetNumberOfProducts() !=0)
+	{
+		Order* order = new Order(*this, shopingCart->CalculateCartSum());
+		this->shopingCart->EmptyTheShoppingCart();
+		return *order;
+	}
+	
 }
 
 void Buyer::PrintBuyer(bool printAddress, bool printShoppingCart)const

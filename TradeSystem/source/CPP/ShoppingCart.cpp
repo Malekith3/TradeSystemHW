@@ -48,12 +48,24 @@ void ShoppingCart::PrintShopingCart() const
 	}
 }
 
-void ShoppingCart::EmptyTheShoppingCart()
+bool ShoppingCart::EmptyTheShoppingCart()
 {
-	ReleaseProductArray();
-	this->numberOfProducts = 0;
-	this->sizeOfCartArray = 0;
+
+	if (this->numberOfProducts != 0)
+	{
+		ReleaseProductArray();
+		this->numberOfProducts = 0;
+		this->sizeOfCartArray = 0;
+
+		return true;
+
+	}
+
+	return false;
 }
+
+
+
 
 const int ShoppingCart::CalculateCartSum() const
 {
