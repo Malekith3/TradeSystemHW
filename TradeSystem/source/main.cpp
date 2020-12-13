@@ -1,3 +1,5 @@
+//Alex Bordeaux 327082970
+//Barack Samuni 318299625
 #include"Header/TradeSystem.h"
 
 void UI(TradeSystem& tradesystem);
