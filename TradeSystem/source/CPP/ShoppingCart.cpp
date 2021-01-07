@@ -20,6 +20,20 @@ ShoppingCart::ShoppingCart(const ShoppingCart& other):sizeOfCartArray(other.size
 	}
 }
 
+ShoppingCart& ShoppingCart::operator=(const ShoppingCart& other)
+{
+	if (this == &other)
+		return *this;
+	this->sizeOfCartArray = other.sizeOfCartArray;
+	this->numberOfProducts = other.numberOfProducts;
+	this->products = new Product*[sizeOfCartArray];
+	for (int i = 0; i < this->numberOfProducts; ++i)
+	{
+		this->products[i] =  new Product(*other.products[i]);
+	}
+	return *this;
+}
+
 void ShoppingCart::AddProductToShopingCart(const Product& product)
 {
 	if (sizeOfCartArray == numberOfProducts)
@@ -43,7 +57,7 @@ void ShoppingCart::PrintShopingCart() const
 	{
 		for (int i = 0; i < numberOfProducts; ++i)
 		{
-			this->products[i]->PrintProduct();
+			this->products[i]->PrintProduct(true);
 		}
 	}
 }

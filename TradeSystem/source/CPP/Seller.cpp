@@ -8,7 +8,7 @@ Seller::Seller(const char* userName, const char* userPassword , const Address& a
 		strcpy(this->userPassword, userPassword);
 		this->userName = new char[strlen(userName) + 1];
 		strcpy(this->userName, userName);
-		this->address = new Address(address);
+		this->address =  address;
 	}
 	else
 		std::cout << "Max length of password is 10  . Object Seller is not initialized \n";
@@ -18,7 +18,6 @@ Seller::~Seller()
 {
 	//std::cout << "Seller D'tor called \n";
 	delete[] userName;
-	delete address;
 	if (this->sizeOfProductArray !=0)
 	{
 		for (int i = 0; i < this->numberOfProducts; ++i)
@@ -28,6 +27,7 @@ Seller::~Seller()
 		delete[] this->products;
 	}
 }
+
 
 bool Seller::SetUserName(char* const userName)
 {
@@ -60,7 +60,7 @@ Seller::Seller(const Seller& other) : numberOfProducts(other.numberOfProducts) ,
 		strcpy(this->userPassword, other.userPassword);
 		this->userName = new char[strlen(other.userName) + 1];
 		strcpy(this->userName, other.userName);
-		this->address = new Address(*other.address);
+		this->address =  Address(other.address);
 	}
 	else
 		std::cout << "Max length of password is 10  . Object Seller is not initialized \n";
@@ -68,26 +68,28 @@ Seller::Seller(const Seller& other) : numberOfProducts(other.numberOfProducts) ,
 
 void Seller::AddProduct(const Product& product)
 {
-
+	
 	if (this->numberOfProducts == this->sizeOfProductArray )
 	{
 		this->products = RealocateProductArray();
-		this->products[numberOfProducts] = new Product (product);
+		this->products[numberOfProducts] = &((new Product (product))->SetSeller(*this));
 		++this->numberOfProducts;
 	}
 	else
 	{
-		this->products[numberOfProducts] = new Product(product);
+		this->products[numberOfProducts] = &((new Product(product))->SetSeller(*this));
 		++this->numberOfProducts;
 	}
 }
 
-void Seller::PrintSeller(bool printAddress , bool printProducts )
+
+
+void Seller::PrintSeller(bool printAddress , bool printProducts ) const
 {
 	std::cout << "Seller name : " << this->userName << std::endl;
 			  
 	if (printAddress)
-		this->address->PrintAddress();
+		this->address.PrintAddress();
 	if (printProducts)
 	{
 		if (this->numberOfProducts==0)
@@ -100,6 +102,7 @@ void Seller::PrintSeller(bool printAddress , bool printProducts )
 		{
 			std::cout << "Product number " << i << "  :\n";
 			this->products[i]->PrintProduct();
+			std::cout << "Product ID: " << products[i]->id << std::endl;
 		}
 	}
 }
@@ -123,4 +126,23 @@ Product** Seller::RealocateProductArray()
 		delete products;
 		return buffer;
 	}
+}
+
+std::ostream& operator<<(std::ostream& os, const Seller& seller)
+{
+	seller.PrintSeller(true,true);
+	return os;
+}
+
+int Seller::CheckOfProductExistence(const char* productName)
+{
+	for (int i = 0; i < this->numberOfProducts; ++i)
+	{
+		if (!strcmp(this->products[i]->GetNameOfProduct(), productName))
+		{
+			
+			return products[i]->id;
+		}
+	}
+	return 0;
 }

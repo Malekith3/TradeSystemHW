@@ -13,6 +13,8 @@ public:
 	Order(const Order& other) = default;
 	//***************************Destructor***************************************
 	~Order() {  }
+	//***************************Operators***************************************
+	friend std::ostream& operator<<(std::ostream& os, const Order& order);
 	//***************************Getters & Setters********************************
 	const Buyer& GetOrder()const { return  this->buyer; };
 	//***************************Methods******************************************

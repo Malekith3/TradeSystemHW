@@ -132,8 +132,8 @@ void TradeSystem::PrintBuyers(bool printAddress,bool printCart) const
 {
 	for (int i = 0; i < this->numberOfBuyers; ++i)
 	{
-		std::cout << "Buyer number : " << i << std::endl;
-		this->buyers[i]->PrintBuyer(printAddress,printCart);
+		std::cout << "Buyer number : " << i << std::endl
+				  <<*this->buyers[i];
 	}
 }
 
@@ -141,8 +141,8 @@ void TradeSystem::PrintSellers(bool printAddress, bool printProducts) const
 {
 	for (int i = 0; i < this->numberOfSellers; ++i)
 	{
-		std::cout << "Seller number : " << i << std::endl;
-		this->sellers[i]->PrintSeller(printAddress, printProducts);
+		std::cout << "Seller number : " << i << std::endl
+			<< *this->sellers[i];
 	}
 }
 
@@ -150,9 +150,45 @@ void TradeSystem::PrintOrders(bool printAddress) const
 {
 	for (int i = 0; i < this->numberOfOrders; ++i)
 	{
-		std::cout << "Order number : " << i << std::endl;
-		this->orders[i]->PrintOrder(printAddress);
+		std::cout << "Order number : " << i << std::endl
+				  << *this->orders[i];
 	}
+}
+
+int TradeSystem::CheckUniqueId(const char* productName)
+{
+	for (int i = 0; i < numberOfSellers; ++i)
+	{
+		int tmp = this->sellers[i]->CheckOfProductExistence(productName);
+		if (tmp == 0)
+		{
+			return this->GenerateUniqeID();
+		}
+		else
+			return tmp;
+	}
+	return this->GenerateUniqeID();
+}
+
+Product& TradeSystem::GetProductBySeller(const char* name)
+{
+	for (int i = 0; i < this->numberOfSellers; ++i)
+	{
+		for (int j = 0; j < this->sellers[i]->numberOfProducts; ++j)
+		{
+			if (!strcmp(this->sellers[i]->products[j]->GetNameOfProduct(), name))
+			{
+				return *this->sellers[i]->products[j];
+			}
+		}
+	
+	}
+}
+
+
+int TradeSystem::GenerateUniqeID()
+{
+	return this->sellers[0]->seedID++;
 }
 
 Seller** TradeSystem::RealocateSellersArray()
@@ -220,4 +256,14 @@ const Order** TradeSystem::RealocateOrdersArray()
 		delete orders;
 		return buffer;
 	}
+}
+
+void operator+=(TradeSystem& tradeSystem, const Buyer& buyer)
+{
+	tradeSystem.AddBuyer(buyer);
+}
+
+void operator+=(TradeSystem& tradeSystem, const Seller& seller)
+{
+	tradeSystem.AddSeller(seller);
 }

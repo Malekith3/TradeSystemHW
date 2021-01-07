@@ -2,7 +2,7 @@
 #define MAX_STRING_SIZE 20
 using namespace std;
 
-enum Operations{Add_Buyer=1 , Add_seller, Add_product_to_seller, Add_to_cart, Checkout, Show_all_buyers, Show_all_sellers, Exit, Show_all_Orders, Logout, ShowShoppingCart};
+enum Operations{Add_Buyer=1 , Add_seller, Add_product_to_seller, Add_to_cart, Checkout, Show_all_buyers, Show_all_sellers, Exit, Show_all_Orders, Logout, ShowShoppingCart , CompareTwoBuyers};
 static Address address;
 static char* ResizeString(char* string)
 {
@@ -22,12 +22,13 @@ static void PrintOperationsList(char typeOfUser)
 {
 	if (typeOfUser=='A'|| typeOfUser == 'a')	//admin
 	{
-		cout << "{1} Add buyer"				 << endl
-			 << "{2} Add seller"			 << endl
-			 << "{3} Add product to seller"  << endl
-			 << "{6} Show all buyers"	     << endl
-			 << "{7} Show all sellers"       << endl
-		     << "{9} Show all orders"		 << endl;
+		cout << "{1} Add buyer"							<< endl
+			 << "{2} Add seller"						<< endl
+			 << "{3} Add product to seller"				<< endl
+			 << "{6} Show all buyers"					<< endl
+			 << "{7} Show all sellers"					<< endl
+		     << "{9} Show all orders"					<< endl
+			 << "{12} Compare two buyers shopping cart" << endl;
 	}
 
 	else if(typeOfUser=='U'||typeOfUser=='u')
@@ -114,7 +115,7 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 			cin  >> password;
 			password = ResizeString(password);
 
-			tradesystem.AddBuyer(Buyer(userName, password, InputAddress()));
+			tradesystem += Buyer(userName, password, InputAddress());
 			break;
 
 		case Add_seller:
@@ -126,7 +127,7 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 			cin >> password;
 			password = ResizeString(password);
 
-			tradesystem.AddSeller(Seller(userName, password, InputAddress()));
+			tradesystem += Seller(userName, password, InputAddress());
 			break;
 
 		case Add_product_to_seller:
@@ -143,8 +144,7 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 		
 			PrintProductType();
 			cin  >> type;
-
-			tradesystem.GetSeller(seller).AddProduct(Product(product, price, (Product::ProductType)type));
+			tradesystem.GetSeller(seller).AddProduct(Product(product, price, (Product::ProductType)type , tradesystem.CheckUniqueId(product)));
 			break;
 
 		case Add_to_cart:
@@ -156,13 +156,7 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 			cin  >> product;
 			product = ResizeString(product);
 
-			cout << "Please enter the product price: " << endl;
-			cin  >> price;
-
-			PrintProductType();
-			cin >> type;
-
-			tradesystem.GetBuyer(buyer).AddToShoppingCart(Product(product, price, (Product::ProductType)type));
+			tradesystem.GetBuyer(buyer).AddToShoppingCart(Product(tradesystem.GetProductBySeller(product)));
 			break;
 
 		case Checkout:
@@ -195,7 +189,20 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 			cin >> buyer;
 			buyer = ResizeString(buyer);
 			tradesystem.GetBuyer(buyer).PrintBuyer(false, true);
-			break;		
+			break;
+		case CompareTwoBuyers:
+			cout << "Please enter a valid first buyer name to compare: " << endl;
+			cin >> buyer;
+			cout << "Please enter a valid second buyer name to compare: " << endl;
+			cin >> seller;
+			if (tradesystem.GetBuyer(buyer) > tradesystem.GetBuyer(seller))
+				cout << buyer <<  " has bigger shopping cart" << endl;
+			else
+				cout << seller << " has bigger shopping cart" << endl;
+			break;
+		default:
+			cout << "Please insert valid option " << endl;
+			break;
 	}
 
 	delete[] userName;

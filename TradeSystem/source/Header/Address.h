@@ -14,7 +14,7 @@ public:
 	
 	//***************************Copy Ctor****************************************
 	Address(const Address& other);
-
+	Address& operator=(const Address& other);
 	//***************************Destructor***************************************
 	~Address();
 

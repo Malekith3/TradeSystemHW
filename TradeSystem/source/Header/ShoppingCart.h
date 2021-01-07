@@ -18,6 +18,7 @@ public:
 	~ShoppingCart() { ReleaseProductArray(); }
 	//***************************Copy C'tor***************************************
 	ShoppingCart(const ShoppingCart& other);
+	ShoppingCart& operator=(const ShoppingCart& other);
 	//***************************Getters & Setters********************************
 	int GetNumberOfProducts() const{return numberOfProducts;}
 	Product** GetProducts() const{return products;}

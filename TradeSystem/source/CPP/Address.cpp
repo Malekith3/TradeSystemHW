@@ -29,6 +29,18 @@ Address::Address(const Address& other)
 	strcpy(this->country, other.country);
 }
 
+Address& Address::operator=(const Address& other)
+{
+	if (this == &other)
+		return *this;
+
+	this->streetName = strdup(other.streetName);
+	this->city = strdup(other.city);
+	this->country = strdup(other.country);
+	this->buildingNumber = other.buildingNumber;
+	return *this;
+}
+
 Address::~Address()
 {
 	//cout << "d'tor of Address" << endl;		//for debugging only
