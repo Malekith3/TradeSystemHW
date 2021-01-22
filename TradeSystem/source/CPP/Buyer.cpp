@@ -1,50 +1,26 @@
 ﻿#include "Header/Buyer.h"
 #include "Header/Order.h"
-Buyer::Buyer(char* userName, char* userPassword, const Address& address)
+Buyer::Buyer(const char* userName, const char* userPassword, const Address& address): User(userName,userPassword)
 {
 	//std::cout << "Buyer C'tor called \n";
-	if (strlen(this->userPassword) >= strlen(userName))
-	{
-		strcpy(this->userPassword, userPassword);
-		this->userName = new char[strlen(userName) + 1];
-		strcpy(this->userName, userName);
-		this->address =  address;
-		this->shopingCart =  ShoppingCart();
-	}
-	else
-		std::cout << "Max length of password is 10  . Object Seller is not initialized \n";
+	this->address = address;
 }
 
-Buyer::Buyer(const Buyer& other)
+Buyer::Buyer(const Buyer& other): User(other)
 {
-	if (strlen(this->userPassword) >= strlen(other.userName)) {
-		//std::cout << "Buyer copy C'tor called \n";
-		strcpy(this->userPassword, other.userPassword);
-		this->userName = new char[strlen(other.userName) + 1];
-		strcpy(this->userName, other.userName);
-		this->address =  other.address;
-		this->shopingCart =  other.shopingCart;
-	}
-	else
-		std::cout << "Max length of password is 10  . Object Seller is not initialized \n";
+	
+	this->address = other.address;
+	this->shopingCart = other.shopingCart;
 }
 
 Buyer& Buyer::operator=(const Buyer& other)
 {
-	if (this == &other)
-		return *this;
-	this->userName = strdup(other.userName);
+	static_cast<User&>(*this) = other;
 	this->address = other.address;
 	this->shopingCart = other.shopingCart;
 	return *this;
 }
 
-Buyer::~Buyer()
-{
-	//std::cout << "Buyer D'tor called \n";
-	delete[] userName;
-
-}
 
 const Order& Buyer::OrderAndCheckout() 
 {
@@ -59,7 +35,8 @@ const Order& Buyer::OrderAndCheckout()
 
 void Buyer::PrintBuyer(bool printAddress, bool printShoppingCart)const
 {
-	std::cout << "Buyer name : " << this->userName << std::endl;
+	std::cout << "Buyer name : " << std::endl;
+	static_cast<User>(*this).PrintUser();
 	if (printAddress)
 		this->address.PrintAddress();
 	if (printShoppingCart)
@@ -67,28 +44,6 @@ void Buyer::PrintBuyer(bool printAddress, bool printShoppingCart)const
 }
 
 
-bool Buyer::SetUserPassword(const char* userPassword, const char* key)
-{
-	if (!strcmp(this->userPassword, key) && strlen(this->userPassword) >= strlen(userName))
-	{
-		strcpy(this->userPassword, userPassword);
-		std::cout << "Password is changed \n";
-		return true;
-	}
-	else
-	{
-		std::cout << "key need to be previous password ! please enter the right one \n ";
-		return false;
-	}
-}
-
-bool Buyer::SetUserName(char* const userName)
-{
-	delete[] this->userName;
-	this->userName = new char[strlen(userName) + 1];
-	strcpy(this->userName, userName);
-	return true;
-}
 
 bool operator>(const Buyer& buyer1, const Buyer& buyer2)
 {
