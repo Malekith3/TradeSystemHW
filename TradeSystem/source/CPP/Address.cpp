@@ -49,6 +49,7 @@ Address::~Address()
 	delete[] this->streetName;
 }
 
+
 void Address::PrintAddress() const
 {
 	cout << "Country: " << this->country << endl << "City: " << this->city << endl << "Street name: " << this->streetName << endl << "Building number: " << this->buildingNumber << endl;
@@ -82,4 +83,10 @@ Address& Address::SetCountry(const char* country)
 	this->country = new char[strlen(country) + 1];
 	strcpy(this->country, country);
 	return *this;
+}
+
+std::ostream& operator<<(std::ostream& os, const Address& address)
+{
+	address.PrintAddress();
+	return os;
 }

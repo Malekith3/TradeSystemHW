@@ -1,11 +1,12 @@
 #include "Header/User.h"
 
-User::User(const char* userName, const char userPassword[])
+User::User(const char* userName, const char userPassword[],Address address)
 {
 	if (strlen(this->userPassword) >= strlen(userPassword))
 	{
 		strcpy(this->userPassword, userPassword);
 		this->userName = strdup(userName);
+		this->address = address;
 	}
 	else
 		std::cout << "Max length of password is 10  . User is not initialized \n";
@@ -16,7 +17,8 @@ User::User(const User& other)
 	if (strlen(this->userPassword) >= strlen(userPassword))
 	{
 		this->userName =strdup(other.userName);
-		//strcpy(this->userPassword, other.userPassword); //Alex thinks it's unnecessary- if there's a problem lower his grade only!
+		this->address = other.address;
+		strcpy(this->userPassword, other.userPassword);
 	}
 	else
 		std::cout << "Max length of password is 10  . User is not initialized \n";
@@ -34,16 +36,17 @@ User& User::operator=(const User& other)
 		return *this;
 	
 	this->userName = strdup(other.userName);
-	//strcpy(this->userPassword, other.userPassword); //Alex thinks it's unnecessary- if there's a problem lower his grade only!
+	strcpy(this->userPassword, other.userPassword);
 }
 
 void User::PrintUser()
 {
 	std::cout << "UserName: " << this->userName << std::endl;
-	//std::cout << "Password: " << this->userPassword << std::endl; //Alex thinks it's unnecessary- if there's a problem lower his grade only!
+	std::cout << "Password: " << this->userPassword << std::endl;
+	std::cout << this->address;
 }
 
-bool User::SetUserName(char* const userName)
+bool User::SetUserName(char* constuserName)
 {
 	delete[] this->userName;
 	this->userName = strdup(userName);

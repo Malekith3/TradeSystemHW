@@ -1,25 +1,14 @@
 ﻿#include "Header/TradeSystem.h"
 
-TradeSystem::TradeSystem(char* systemName)
-	: numberOfBuyers(0),numberOfSellers(0),numberOfOrders(0),
-	  sizeOfBuyersArray(0),sizeOfSellersArray(0),sizeOfOrdersArray(0)
+TradeSystem::TradeSystem(char* systemName): numberOfUsers(0) , numberOfOrders(0),sizeOfUsersArray(0),sizeOfOrdersArray(0)
 {
-	//std::cout << "TradeSystem Ctor called \n";
-	this->systemName = new char[strlen(systemName) + 1];
-	strcpy(this->systemName, systemName);
+	this->systemName = strdup( systemName);
 }
 
 TradeSystem::~TradeSystem()
 {
-	//std::cout << "TradeSystem Dtor called \n";
-	if (this->numberOfBuyers)
-	{
-		for (int i = 0; i < this->numberOfBuyers; ++i)
-		{
-			delete this->buyers[i];
-		}
-		delete[] this->buyers;
-	}
+	delete[] this->systemName;
+	
 	if (this->numberOfOrders)
 	{
 		for (int i = 0; i < this->numberOfOrders; ++i)
@@ -28,23 +17,29 @@ TradeSystem::~TradeSystem()
 		}
 		delete[] this->orders;
 	}
-	if (this->numberOfSellers)
+	if (this->numberOfUsers)
 	{
-		for (int i = 0; i < this->numberOfSellers; ++i)
+		for (int i = 0; i < this->numberOfUsers; ++i)
 		{
-			delete this->sellers[i];
+			delete this->users[i];
 		}
-		delete[] this->sellers;
+		delete[] this->users;
 	}
 }
 
 Seller& TradeSystem::GetSeller(const char* sellerName) const
 {
-	for (int i = 0; i < this->numberOfSellers; ++i)
+	for (int i = 0; i < this->numberOfUsers; ++i)
 	{
-		if (!strcmp(this->sellers[i]->GetUserName(),sellerName))
+		if (!strcmp(this->users[i]->GetUserName(), sellerName))
 		{
-			return *sellers[i];
+			Seller* tmp = dynamic_cast<Seller*>(users[i]);
+			
+			if (tmp)
+			{
+				return *tmp;
+			}
+			
 		}
 	}
 	std::cout << "Please insert valid seller name \n";
@@ -52,11 +47,17 @@ Seller& TradeSystem::GetSeller(const char* sellerName) const
 
 Buyer& TradeSystem::GetBuyer(const char* buyerName) const
 {
-	for (int i = 0; i < this->numberOfBuyers; ++i)
+	for (int i = 0; i < this->numberOfUsers; ++i)
 	{
-		if (!strcmp(this->buyers[i]->GetUserName(), buyerName))
+		if (!strcmp(this->users[i]->GetUserName(), buyerName))
 		{
-			return *buyers[i];
+			Buyer* tmp = dynamic_cast<Buyer*>(users[i]);
+
+			if (tmp)
+			{
+				return *tmp;
+			}
+
 		}
 	}
 	std::cout << "Please insert valid buyer name \n";
@@ -76,41 +77,87 @@ const Order& TradeSystem::GetOrder(const char* orderBuyerName) const
 
 void TradeSystem::SetSystemName(char* const systemName)
 {
-	delete[] systemName;
-	this->systemName = new char [strlen(systemName) + 1];
-	strcpy(this->systemName, systemName);
+	delete[] this->systemName;
+	this->systemName = strdup(systemName);
 }
 
-void TradeSystem::AddBuyer(const Buyer& buyer)
+void TradeSystem::PrintBuyers(bool printAddress, bool printCart) const
 {
-	if (this->sizeOfBuyersArray == this->numberOfBuyers)
+	int numBuyers = 1;
+	for (int i = 0; i < this->numberOfUsers; ++i)
 	{
-		this->buyers = RealocateBuyersArray();
-		this->buyers[this->numberOfBuyers] = new Buyer(buyer);
-		++this->numberOfBuyers;
-	}
-	else
-	{
-		this->buyers[this->numberOfBuyers] = new Buyer(buyer);
-		++this->numberOfBuyers;
+		Buyer* tmp = dynamic_cast<Buyer*>(this->users[i]);
+		if (tmp) 
+		{
+			std::cout << "Buyer number : " << numBuyers << std::endl;
+			std::cout << *tmp;
+			++numBuyers;
+		}
 	}
 	
 }
 
-void TradeSystem::AddSeller(const Seller& seller)
+void TradeSystem::PrintSellers(bool printAddress, bool printProducts) const
 {
-
-	if (this->sizeOfSellersArray == this->numberOfSellers)
+	int numSellers = 1;
+	for (int i = 0; i < this->numberOfUsers; ++i)
 	{
-		this->sellers = RealocateSellersArray();
-		this->sellers[this->numberOfSellers] = new Seller(seller);
-		++this->numberOfSellers;
+		Seller* tmp = dynamic_cast<Seller*>(this->users[i]);
+		if (tmp) 
+		{
+			std::cout << "Seller number : " << numSellers << std::endl;
+			std::cout << *tmp;
+			++numSellers;
+		}
+	}
+}
+
+void TradeSystem::PrintOrders(bool printAddress) const
+{
+	for (int i = 0; i < this->numberOfOrders; ++i)
+	{
+		std::cout << "Order number : " << i << std::endl
+			<< *this->orders[i];
+	}
+}
+
+
+void TradeSystem::AddUser(const User& user)
+{
+	const Seller* tmpSeller =  dynamic_cast<const Seller*>(&user);
+	const Buyer*  tmpBuyer = dynamic_cast<const Buyer*>(&user);
+	
+	if (tmpSeller)
+	{
+		if (this->sizeOfUsersArray == this->numberOfUsers)
+		{
+			this->users = RealocateUsersArray();
+			this->users[this->numberOfUsers] = new Seller(*tmpSeller);
+			++this->numberOfUsers;
+		}
+		else
+		{
+			this->users[this->numberOfUsers] = new Seller(*tmpSeller);
+			++this->numberOfUsers;
+		}
+	}
+	else if (tmpBuyer)
+	{
+		if (this->sizeOfUsersArray == this->numberOfUsers)
+		{
+			this->users = RealocateUsersArray();
+			this->users[this->numberOfUsers] = new Buyer(*tmpBuyer);
+			++this->numberOfUsers;
+		}
+		else
+		{
+			this->users[this->numberOfUsers] = new Buyer(*tmpBuyer);
+			++this->numberOfUsers;
+		}
 	}
 	else
-	{
-		this->sellers[this->numberOfSellers] = new Seller(seller);
-		++this->numberOfSellers;
-	}
+		std::cout << "Cant add Buyer/Seller \n ";
+	
 }
 
 void TradeSystem::AddToOrderList(const Order& order)
@@ -118,7 +165,7 @@ void TradeSystem::AddToOrderList(const Order& order)
 	if (this->sizeOfOrdersArray == this->numberOfOrders)
 	{
 		this->orders = RealocateOrdersArray();
-		this->orders[this->numberOfOrders] =  &order;
+		this->orders[this->numberOfOrders] = &order;
 		++this->numberOfOrders;
 	}
 	else
@@ -128,110 +175,67 @@ void TradeSystem::AddToOrderList(const Order& order)
 	}
 }
 
-void TradeSystem::PrintBuyers(bool printAddress,bool printCart) const
-{
-	for (int i = 0; i < this->numberOfBuyers; ++i)
-	{
-		std::cout << "Buyer number : " << i << std::endl
-				  <<*this->buyers[i];
-	}
-}
-
-void TradeSystem::PrintSellers(bool printAddress, bool printProducts) const
-{
-	for (int i = 0; i < this->numberOfSellers; ++i)
-	{
-		std::cout << "Seller number : " << i << std::endl
-			<< *this->sellers[i];
-	}
-}
-
-void TradeSystem::PrintOrders(bool printAddress) const
-{
-	for (int i = 0; i < this->numberOfOrders; ++i)
-	{
-		std::cout << "Order number : " << i << std::endl
-				  << *this->orders[i];
-	}
-}
-
 int TradeSystem::CheckUniqueId(const char* productName)
 {
-	for (int i = 0; i < numberOfSellers; ++i)
+	for (int i = 0; i < numberOfUsers; ++i)
 	{
-		int tmp = this->sellers[i]->CheckOfProductExistence(productName);
-		if (tmp == 0)
+		Seller* tmp = dynamic_cast<Seller*>(this->users[i]);
+		if (tmp)
 		{
-			return this->GenerateUniqeID();
+			int tmp1 = tmp->CheckOfProductExistence(productName);
+			if (tmp1 == 0)
+			{
+				return this->GenerateUniqeID();
+			}
+			else
+				return tmp1;
 		}
-		else
-			return tmp;
+		
 	}
 	return this->GenerateUniqeID();
 }
 
-Product& TradeSystem::GetProductBySeller(const char* name)
+Product& TradeSystem::GetProductBySeller(const char* productName)
 {
-	for (int i = 0; i < this->numberOfSellers; ++i)
+	for (int i = 0; i < this->numberOfUsers; ++i)
 	{
-		for (int j = 0; j < this->sellers[i]->numberOfProducts; ++j)
+		Seller* tmp = dynamic_cast<Seller*>(this->users[i]);
+		if (tmp)
 		{
-			if (!strcmp(this->sellers[i]->products[j]->GetNameOfProduct(), name))
+			for (int j = 0; j < tmp->numberOfProducts; ++j)
 			{
-				return *this->sellers[i]->products[j];
+				if (!strcmp(tmp->products[j]->GetNameOfProduct(), productName))
+				{
+					return *tmp->products[j];
+				}
 			}
 		}
-	
 	}
 }
-
 
 int TradeSystem::GenerateUniqeID()
 {
-	return this->sellers[0]->seedID++;
+	return ++Seller::seedID;
 }
 
-Seller** TradeSystem::RealocateSellersArray()
+User** TradeSystem::RealocateUsersArray()
 {
-	if (this->sizeOfSellersArray == 0)
-		++this->sizeOfSellersArray;
-	this->sizeOfSellersArray *= 2;
-	Seller** buffer = new Seller* [this->sizeOfSellersArray ];
-	
-	if (this->numberOfSellers == 0)
+	if (this->sizeOfUsersArray == 0)
+		++this->sizeOfUsersArray;
+	this->sizeOfUsersArray *= 2;
+	User** buffer = new User*  [this->sizeOfUsersArray];
+
+	if (this->numberOfUsers == 0)
 	{
 		return buffer;
 	}
 	else
 	{
-		for (int i = 0; i < this->numberOfSellers; ++i)
+		for (int i = 0; i < this->numberOfUsers; ++i)
 		{
-			buffer[i] = this->sellers[i];
+			buffer[i] = this->users[i];
 		}
-		delete sellers;
-		return buffer;
-	}
-	
-}
-
-Buyer** TradeSystem::RealocateBuyersArray()
-{
-	if (this->sizeOfBuyersArray == 0)
-		++this->sizeOfBuyersArray;
-	this->sizeOfBuyersArray *= 2;
-	Buyer** buffer = new Buyer * [this->sizeOfBuyersArray];
-	
-	if (this->numberOfBuyers == 0)
-	{
-		return buffer;
-	}
-	else
-	{
-		for (int i = 0; i < this->numberOfBuyers; ++i)
-		{
-			buffer[i] = this->buyers[i];
-		}
-		delete buyers;
+		delete users;
 		return buffer;
 	}
 }
@@ -242,7 +246,7 @@ const Order** TradeSystem::RealocateOrdersArray()
 		++this->sizeOfOrdersArray;
 	this->sizeOfOrdersArray *= 2;
 	const Order** buffer = new const Order * [this->sizeOfOrdersArray];
-	
+
 	if (this->numberOfOrders == 0)
 	{
 		return buffer;
@@ -258,12 +262,4 @@ const Order** TradeSystem::RealocateOrdersArray()
 	}
 }
 
-void operator+=(TradeSystem& tradeSystem, const Buyer& buyer)
-{
-	tradeSystem.AddBuyer(buyer);
-}
-
-void operator+=(TradeSystem& tradeSystem, const Seller& seller)
-{
-	tradeSystem.AddSeller(seller);
-}
+void operator+=(TradeSystem& tradeSystem, const User& user) {tradeSystem.AddUser(user);}

@@ -1,9 +1,19 @@
 ﻿#include "Header/Order.h"
 
 
+
+
+Order& Order::operator=(const Order& other)
+{
+	if (this == &other)
+		return *this;
+	buyer = other.buyer;
+	orderInvoiceSum = other.orderInvoiceSum;
+	return *this;
+}
 void Order::PrintOrder(bool printAddress) const
 {
-	this->buyer.PrintBuyer(printAddress, true);
+	this->buyer.PrintBuyer(true);
 	std::cout << "TOTAL: " << this->orderInvoiceSum <<"$"<<std::endl;
 }
 

@@ -8,7 +8,6 @@ class Order;
 
 class Buyer: public User
 {
-	Address address;
 	ShoppingCart shopingCart;
 public:
 
@@ -24,8 +23,8 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const Buyer& buyer);
 	//***************************Methods******************************************
 	void AddToShoppingCart(const Product& product) { this->shopingCart.AddProductToShopingCart(product); }
-	const Order& OrderAndCheckout();
-	void PrintBuyer(bool printAddress = false, bool printShoppingCart = false) const;
+	Order* OrderAndCheckout();
+	void PrintBuyer(bool printShoppingCart = false) const;
 	//****************************************************************************
 
 

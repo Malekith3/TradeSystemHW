@@ -7,7 +7,6 @@
 
 class Seller : public User
 {
-	Address address;
 	int numberOfProducts;
 	int sizeOfProductArray;
 	Product** products;
@@ -28,7 +27,7 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const Seller& seller);
 	//***************************Methods******************************************
 	void AddProduct(const Product& product);
-	void PrintSeller(bool printAddress = false,bool printProducts=false) const;
+	void PrintSeller(bool printProducts = false) const;
 private:
 	friend class TradeSystem;
 	int CheckOfProductExistence(const char* productName);

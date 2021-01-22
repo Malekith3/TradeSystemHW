@@ -1,9 +1,7 @@
 #include "Header/Seller.h"
 
-Seller::Seller( const char* userName,  const char* userPassword , const Address& address):sizeOfProductArray(0),numberOfProducts(0)
-																						, User(userName,userPassword)
+Seller::Seller( const char* userName,  const char* userPassword ,const Address& address):User(userName,userPassword,address),sizeOfProductArray(0),numberOfProducts(0)
 {
-	this->address = address;
 }
 
 Seller::~Seller()
@@ -21,10 +19,8 @@ Seller::~Seller()
 
 
 
-Seller::Seller(const Seller& other) : numberOfProducts(other.numberOfProducts) , sizeOfProductArray(other.sizeOfProductArray)
-																			   , User(other)
+Seller::Seller(const Seller& other) : numberOfProducts(other.numberOfProducts) , sizeOfProductArray(other.sizeOfProductArray), User(other)
 {
-	this->address = other.address;
 }
 
 void Seller::AddProduct(const Product& product)
@@ -45,13 +41,11 @@ void Seller::AddProduct(const Product& product)
 
 
 
-void Seller::PrintSeller(bool printAddress , bool printProducts ) const
+void Seller::PrintSeller( bool printProducts ) const
 {
-	std::cout << "Seller name : " << std::endl;
 	static_cast<User>(*this).PrintUser();
 	
-	if (printAddress)
-		this->address.PrintAddress();
+	
 	if (printProducts)
 	{
 		if (this->numberOfProducts==0)
@@ -92,7 +86,7 @@ Product** Seller::RealocateProductArray()
 
 std::ostream& operator<<(std::ostream& os, const Seller& seller)
 {
-	seller.PrintSeller(true,true);
+	seller.PrintSeller(true);
 	return os;
 }
 

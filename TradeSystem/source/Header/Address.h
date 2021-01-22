@@ -1,5 +1,7 @@
 #ifndef __ADDRESS_H__
 #define __ADDRESS_H__
+#include <ostream>
+
 class Address
 {
 	char* streetName;
@@ -17,7 +19,8 @@ public:
 	Address& operator=(const Address& other);
 	//***************************Destructor***************************************
 	~Address();
-
+	//***************************Operators****************************************
+	friend std::ostream& operator<<(std::ostream& os, const Address& address);
 	//***************************Methods******************************************
 	void PrintAddress() const;
 

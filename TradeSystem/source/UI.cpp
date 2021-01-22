@@ -1,7 +1,7 @@
 #include "Header/TradeSystem.h"
 #define MAX_STRING_SIZE 20
 using namespace std;
-
+void OrderHandler(Order* order, TradeSystem& tradeSystem);
 enum Operations{Add_Buyer=1 , Add_seller, Add_product_to_seller, Add_to_cart, Checkout, Show_all_buyers, Show_all_sellers, Exit, Show_all_Orders, Logout, ShowShoppingCart , CompareTwoBuyers};
 static Address address;
 static char* ResizeString(char* string)
@@ -72,7 +72,7 @@ static Address& InputAddress()
 	char* country    = new char[MAX_STRING_SIZE + 1];
 	int buildingNumber;
 	
-	cout << "Please enter your street name (20 characters max): "  << endl;
+	cout << "Please enter your street name (20 characters max and _ for spaces): "  << endl;
 	cin	 >> streetName;
 	streetName= ResizeString(streetName);
 
@@ -80,11 +80,11 @@ static Address& InputAddress()
 	cin  >> buildingNumber;
 
 
-	cout << "Please enter your city (20 characters max): "		   << endl;
+	cout << "Please enter your city (20 characters max and _ for spaces): "		   << endl;
 	cin  >> city;
 	city = ResizeString(city);
 
-	cout << "Please enter your country (20 characters max): "	   << endl;
+	cout << "Please enter your country (20 characters max and _ for spaces): "	   << endl;
 	cin  >> country;
 	country = ResizeString(country);
 	address.SetStreetName(streetName).SetBuildingNumber(buildingNumber).SetCity(city).SetCountry(country);
@@ -103,15 +103,16 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 	char* seller = new char[MAX_STRING_SIZE];
 	int type;
 	int price;
+	
 	switch (operation)
 	{
 		case Add_Buyer:
 			
-			cout << "Please enter your username: " << endl;
+			cout << "Please enter your username (20 characters max and _ for spaces): " << endl;
 			cin  >> userName;
 			userName = ResizeString(userName);
 
-			cout << "Please enter your password " << endl;
+			cout << "Please enter your password (20 characters max and _ for spaces) " << endl;
 			cin  >> password;
 			password = ResizeString(password);
 
@@ -119,11 +120,11 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 			break;
 
 		case Add_seller:
-			cout << "Please enter your username: " << endl;
+			cout << "Please enter your username (20 characters max and _ for spaces) :" << endl;
 			cin >> userName;
 			userName = ResizeString(userName);
 
-			cout << "Please enter your password " << endl;
+			cout << "Please enter your password (20 characters max and _ for spaces) " << endl;
 			cin >> password;
 			password = ResizeString(password);
 
@@ -135,7 +136,7 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 			cin  >> seller;
 			seller = ResizeString(seller);
 		
-			cout << "Please enter a product name: "      << endl;
+			cout << "Please enter a product name (20 characters max and _ for spaces): "      << endl;
 			cin  >> product;
 			product = ResizeString(product);
 
@@ -152,7 +153,7 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 			cin  >> buyer;
 			buyer = ResizeString(buyer);
 
-			cout << "Please enter a product name: " << endl;
+			cout << "Please enter a  valid product name : " << endl;
 			cin  >> product;
 			product = ResizeString(product);
 
@@ -163,8 +164,7 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 			cout << "Please enter a valid buyer name: " << endl;
 			cin >> buyer;
 			buyer = ResizeString(buyer);
-			tradesystem.AddToOrderList(tradesystem.GetBuyer(buyer).OrderAndCheckout());
-			tradesystem.GetOrder(buyer).PrintOrder();
+			OrderHandler(tradesystem.GetBuyer(buyer).OrderAndCheckout(),tradesystem);	
 			break;
 
 		case Show_all_buyers:
@@ -188,7 +188,7 @@ static void SetOperation(TradeSystem& tradesystem, int operation ,char& typeOfUs
 			cout << "Please enter a valid buyer name: " << endl;
 			cin >> buyer;
 			buyer = ResizeString(buyer);
-			tradesystem.GetBuyer(buyer).PrintBuyer(false, true);
+			tradesystem.GetBuyer(buyer).PrintBuyer(true);
 			break;
 		case CompareTwoBuyers:
 			cout << "Please enter a valid first buyer name to compare: " << endl;
@@ -232,4 +232,13 @@ void UI(TradeSystem& tradeSystem)
 
 	
 }
-
+void OrderHandler( Order* order,TradeSystem& tradeSystem) 
+{
+	if (order == nullptr)
+	{
+		cout << "Can't checkout your shopping cart is empty!!!  " << endl;
+		return;
+	}
+	order->PrintOrder();
+	tradeSystem.AddToOrderList(*order);
+}

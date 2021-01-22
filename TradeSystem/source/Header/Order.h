@@ -8,9 +8,10 @@ class Order
 	int orderInvoiceSum;
 public:
 	//***************************Constructors*************************************
-	Order::Order(const Buyer& buyer ,int orderInvoiceSum) : buyer(buyer) ,orderInvoiceSum(orderInvoiceSum){}
+	Order(const Buyer& buyer ,int orderInvoiceSum) : buyer(buyer) ,orderInvoiceSum(orderInvoiceSum){}
 	//***************************Copy Ctor****************************************
 	Order(const Order& other) = default;
+	Order& operator=(const Order& other);
 	//***************************Destructor***************************************
 	~Order() {  }
 	//***************************Operators***************************************
